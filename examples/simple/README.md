@@ -1,37 +1,18 @@
-# CyberArk PAMonCloud Controller
+# PAMonCloud Controller deployment example
 
-## Overview  
-Welcome to the **CyberArk PAMonCloud Controller Terraform Module** repository! This project provides a tool to simplify the deployment of **PAMonCloud Controller node**, which includes everything you need in order to run PAMonCloud BYOI on **Amazon Web Services (AWS)**. It consists the required software installed, as well as permissions delegated from an IAM Instance Profile. The controller node is Amazon Linux 2023 based.
-
-## Prerequisites  
-Before using these modules, ensure you have the following:  
-- **Terraform** installed  
-- AWS account with necessary permissions for deploying resources  
-- A valid **PAM_Self-Hosted_on_AWS.zip** file containing the BYOI solution  
-
-Instructions for downloading the **PAM_Self-Hosted_on_AWS.zip** file can be found [here](https://docs.cyberark.com/pam-self-hosted/latest/en/content/pas%20cloud/images.htm#CreateyourAMIs). It should be uploaded to an S3 bucket, the deployment will ask for the S3 bucket & names in order to upload it to the controller.
+Configuration in this directory creates a controller host to allow you to run the PAMonCloud solution with no further required prerequisites.
 
 ## Usage
 
-Below is an example usage of this Terraform module:
+To run this example you need input the required variables, then execute:
 
-```hcl
-module "pamoncloud_controller" {
-  source = "cyberark/pamoncloud-controller/aws"
-
-  instance_type     = "t3.medium"
-  vpc_cidr          = "172.31.0.0/16"
-  subnet_cidr       = "172.31.1.0/24"
-  allowed_ssh_cidr  = ["3.5.7.9/32", "2.4.6.8/32"]
-  key_name          = "my-key"
-  s3_bucket_name    = "my-s3-bucket"
-  s3_file_name      = "PAM_Self-Hosted_on_AWS.zip"
-}
+```bash
+terraform init
+terraform plan
+terraform apply
 ```
 
-## Examples
-
-See [`examples`](/examples) directory for working examples to reference.
+Note that this example creates resources which can cost money (AWS EC2 Instance, for example). Run `terraform destroy` when you don't need these resources.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -48,27 +29,27 @@ See [`examples`](/examples) directory for working examples to reference.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_pamoncloud_controller"></a> [pamoncloud_controller](/) | ../../ | n/a |
 
 ## Inputs
 
+No inputs.
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
-| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type for the controller node | `string` | `"t2.micro"` |
-| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for the VPC | `string` | `"10.0.0.0/16"` |
-| <a name="input_subnet_cidr"></a> [subnet\_cidr](#input\_subnet\_cidr) | CIDR block for the subnet | `string` | `"10.0.1.0/24"` |
 | <a name="input_allowed_ssh_cidr"></a> [allowed\_ssh\_cidr](#input\_allowed\_ssh\_cidr) | CIDR blocks allowed for SSH inbound access | `list` | `["0.0.0.0/0"]` |
-| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | EC2 key pair name | `string` | n/a |
+| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | EC2 key pair name | `string` | `"PAMonCloud-KP"` |
 | <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | Name for the S3 bucket containing the BYOI zip | `string` | n/a |
-| <a name="input_s3_file_name"></a> [s3\_file\_name](#input\_s3\_file\_name) | BYOI zip file name to be downloaded from S3 | `string` | n/a |
+| <a name="input_s3_file_name"></a> [s3\_file\_name](#input\_s3\_file\_name) | BYOI zip file name to be downloaded from S3 | `string` | `"PAM_Self-Hosted_on_AWS.zip"` |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | Controller's instance public IP address. |
-| <a name="output_instance_public_dns"></a> [instance\_public\_dns](#output\_instance\_public\_dns) | Controller's instance public DNS. |
-| <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | Controller's instance ID. |
+| <a name="output_instance_public_ip"></a> [instance\_public\_ip](#output\_instance\_public\_ip) | Controller instance public IP address. |
+| <a name="output_instance_public_dns"></a> [instance\_public\_dns](#output\_instance\_public\_dns) | Controller instance public DNS. |
+| <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | Controller instance ID. |
 
 ## Resources
 
@@ -107,16 +88,3 @@ For list objects, you can use `terraform state list` to get all objects within t
 | `data.aws_partition.current`                      | AWS partition data source.                                  |
 
 <!-- END_TF_DOCS -->
-
-## Documentation  
-- [Examples](/examples): Ready-to-use examples.  
-
-## Licensing  
-This repository is subject to the following licenses:  
-- **Terraform templates**: Licensed under the Apache License, Version 2.0 ([LICENSE](LICENSE)).  
-
-## Contributing  
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more details.  
-
-## About  
-CyberArk is a global leader in **Identity Security**, providing powerful solutions for managing privileged access. Learn more at [www.cyberark.com](https://www.cyberark.com).  
