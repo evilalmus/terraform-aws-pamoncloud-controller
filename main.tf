@@ -118,6 +118,10 @@ resource "aws_instance" "ec2_instance" {
     s3_file_name   = var.s3_file_name
   })
 
+  root_block_device {
+    volume_size = 30
+  }
+
   tags = {
     Name = "PAMonCloud-BYOI-Controller"
   }
