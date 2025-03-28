@@ -7,7 +7,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "PAMonCloud-BYOI-Controller-VPC"
+    Name = "BOB-PAMonCloud-BYOI-Controller-VPC"
   }
 }
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "instance_sg" {
 #### Create IAM Policies & Roles
 
 resource "aws_iam_role" "instance_role" {
-  name = "PAMonCloud-BYOI-Controller-InstanceRole"
+  name = "BOB-PAMonCloud-BYOI-Controller-InstanceRole"
 
   assume_role_policy = <<EOF
 {
@@ -73,7 +73,7 @@ EOF
 }
 
 resource "aws_iam_policy" "instance_policy" {
-  name        = "EC2RequiredPermissions"
+  name        = "BOB-EC2RequiredPermissions"
   description = "Permissions for EC2 instance to perform required actions"
 
   policy = templatefile("${path.module}/files/policy.json.tpl", {
@@ -89,7 +89,7 @@ resource "aws_iam_role_policy_attachment" "instance_policy_attachment" {
 }
 
 resource "aws_iam_instance_profile" "instance_profile" {
-  name = "PAMonCloud-BYOI-Controller-InstanceProfile"
+  name = "BOB-PAMonCloud-BYOI-Controller-InstanceProfile"
   role = aws_iam_role.instance_role.name
 }
 
@@ -123,6 +123,6 @@ resource "aws_instance" "ec2_instance" {
   }
 
   tags = {
-    Name = "PAMonCloud-BYOI-Controller"
+    Name = "BOB-PAMonCloud-BYOI-Controller"
   }
 }
